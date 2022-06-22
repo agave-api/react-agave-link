@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import useScript from './useScriptHooks';
 import { UseAgaveLinkProps, UseAgaveLinkResponse } from './types';
 
@@ -10,16 +10,20 @@ export const useAgaveLink = (config: UseAgaveLinkProps): UseAgaveLinkResponse =>
     const isServer = typeof window === 'undefined';
     const isReady = !isServer && !!window.AgaveLink && !loading && !error;
 
+    const configRef = useRef(config);
+
+    configRef.current = config;
+
     const openLink = useCallback(
         (overrideConfig?: Partial<UseAgaveLinkProps>) => {
             if (window?.AgaveLink) {
                 window.AgaveLink.openLink({
-                    ...config,
+                    ...configRef.current,
                     ...overrideConfig,
                 });
             }
         },
-        [config]
+        []
     );
 
     return { openLink, isReady, error };
