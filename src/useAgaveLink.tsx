@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import useScript from './useScriptHooks';
 import { UseAgaveLinkProps, UseAgaveLinkResponse } from './types';
 
@@ -7,15 +7,8 @@ export const useAgaveLink = (config: UseAgaveLinkProps): UseAgaveLinkResponse =>
         src: 'https://app.agaveapi.com/init.js',
         checkForExisting: true,
     });
-    const [isReady, setIsReady] = useState(false);
-    const isServer = (typeof window === 'undefined');
-    const isReadyForInitialization = !isServer && !!window.AgaveLink && !loading && !error;
-
-    useEffect(() => {
-        if (isReadyForInitialization && window.AgaveLink) {
-            setIsReady(true);
-        }
-    }, [isReadyForInitialization, config]);
+    const isServer = typeof window === 'undefined';
+    const isReady = !isServer && !!window.AgaveLink && !loading && !error;
 
     const openLink = useCallback(
         (overrideConfig?: Partial<UseAgaveLinkProps>) => {
