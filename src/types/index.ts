@@ -3,6 +3,7 @@ export interface AgaveLink {
 }
 
 export interface UseAgaveLinkProps {
+    referenceId: string;
     linkToken: string;
     onSuccess: (publicToken: string) => void;
     onExit?: (error?: string) => void;
